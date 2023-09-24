@@ -1,19 +1,25 @@
 import React from "react";
 
-function Persons({ persons, findName }) {
+function Persons({ persons, findName, removePerson }) {
   return (
     <div>
       {persons
-        .filter((e) => {
-          if (e.name.toLowerCase().includes(findName)) {
-            return e;
+        .filter((person) => {
+          if (
+            person &&
+            person.name &&
+            person.name.toLowerCase().includes(findName)
+          ) {
+            return person;
           }
+          return false;
         })
-        .map((x, key) => {
+        .map((person, key) => {
           return (
-            <p key={key}>
-              {x.name} {x.number}
-            </p>
+            <div key={key}>
+              {person.name} {person.number}
+              <button onClick={() => removePerson(person.id)}>delete</button>
+            </div>
           );
         })}
     </div>

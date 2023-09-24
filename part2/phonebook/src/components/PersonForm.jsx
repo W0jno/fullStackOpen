@@ -1,31 +1,42 @@
 import React from "react";
 import { useState } from "react";
+import axios from "axios";
+import personsService from "../services/persons.js";
 
-function PersonForm({ persons, setPersons }) {
+function PersonForm({ persons, setPersons, updatePerson }) {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
+
   const addPerson = (e) => {
     e.preventDefault();
     const personObj = {
-      name: newName,
-      number: newNumber,
-      important: Math.random() < 0.5,
-      id: newName,
+      name: newName.trim(),
+      number: newNumber.trim(),
+      id: persons.length + 1,
     };
-    if (
-      persons.find((x) => x.name.toLowerCase() == personObj.name.toLowerCase())
-    ) {
-      alert(`${personObj.name} is already added to phonebook`);
-      setNewName("");
-    } else if (persons.find((x) => x.number == personObj.number)) {
-      alert(`${personObj.number} is already added to phonebook`);
-      setNewNumber("");
-    } else {
-      setPersons(persons.concat(personObj));
-      setNewName("");
-      setNewNumber("");
+    if (newName !== "" || newNumber !== "") {
+      if (
+        persons.find(
+          (x) => x.name.toLowerCase() == personObj.name.toLowerCase()
+        )
+      ) {
+        if (
+          window.confirm(
+            `${personObj.name} is already added to phonebook, replace the old number with a new one?`
+          )
+        ) {
+          updatePerson(newName, newNumber);
+        }
+      } else {
+        personsService.create(personObj).then(() => {
+          setPersons(persons.concat(personObj));
+          setNewName("");
+          setNewNumber("");
+        });
+      }
     }
   };
+
   const inputNameHandler = (e) => {
     setNewName(e.target.value);
   };

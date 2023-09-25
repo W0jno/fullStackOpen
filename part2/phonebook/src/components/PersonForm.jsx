@@ -3,7 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import personsService from "../services/persons.js";
 
-function PersonForm({ persons, setPersons, updatePerson }) {
+function PersonForm({ persons, setPersons, updatePerson, setMessage }) {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
 
@@ -12,7 +12,7 @@ function PersonForm({ persons, setPersons, updatePerson }) {
     const personObj = {
       name: newName.trim(),
       number: newNumber.trim(),
-      id: persons.length + 1,
+      id: Math.random(),
     };
     if (newName !== "" || newNumber !== "") {
       if (
@@ -29,6 +29,10 @@ function PersonForm({ persons, setPersons, updatePerson }) {
         }
       } else {
         personsService.create(personObj).then(() => {
+          setMessage(`Added ${personObj.name}`);
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
           setPersons(persons.concat(personObj));
           setNewName("");
           setNewNumber("");

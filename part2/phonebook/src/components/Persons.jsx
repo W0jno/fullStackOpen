@@ -18,7 +18,9 @@ function Persons({ persons, findName, removePerson }) {
           return (
             <div key={key}>
               {person.name} {person.number}
-              <button onClick={() => removePerson(person.id)}>delete</button>
+              <button onClick={() => removePerson(person.id, person.name)}>
+                delete
+              </button>
             </div>
           );
         })}

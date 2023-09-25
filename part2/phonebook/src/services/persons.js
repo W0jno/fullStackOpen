@@ -14,7 +14,7 @@ const create = (newObject) => {
       console.log("created", res.data);
     })
     .catch((err) => {
-      console.log("error" + err);
+      console.log("error", err);
     });
 };
 

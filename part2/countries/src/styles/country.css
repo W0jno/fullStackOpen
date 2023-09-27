@@ -1,0 +1,8 @@
+.weatherIcon {
+  border-radius: 10px 10px 10px 10px;
+  -webkit-border-radius: 10px 10px 10px 10px;
+  -moz-border-radius: 10px 10px 10px 10px;
+  border: 4px solid #000000;
+  background: #b8b7b7;
+  width: 8vw;
+}

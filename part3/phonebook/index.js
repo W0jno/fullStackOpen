@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const morgan = require("morgan");
 
 let persons = [
   {
@@ -27,6 +28,14 @@ let persons = [
 let currentDate = Date();
 app.use(express.json());
 
+morgan.token(
+  "body",
+  (getBody = (req) => {
+    return JSON.stringify(req.body);
+  })
+);
+
+app.use(morgan(`:method :url :referrer  :response-time ms :body`));
 app.get("/api/persons", (req, res) => {
   res.json(persons);
 });
@@ -65,7 +74,7 @@ app.post("/api/persons", (req, res) => {
     });
   }
 
-  if (findPerson.name === req.body.name) {
+  if (findPerson) {
     return res.status(400).json({
       error: "name exists already",
     });

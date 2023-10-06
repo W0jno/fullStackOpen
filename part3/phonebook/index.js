@@ -2,29 +2,8 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const cors = require("cors");
-
-let persons = [
-  {
-    id: 1,
-    name: "Arto Hellas",
-    number: "040-123456",
-  },
-  {
-    id: 2,
-    name: "Ada Lovelace",
-    number: "39-44-5323523",
-  },
-  {
-    id: 3,
-    name: "Dan Abramov",
-    number: "12-43-234345",
-  },
-  {
-    id: 4,
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-  },
-];
+const Person = require("./models/person");
+//const person = require("./models/person");
 
 let currentDate = Date();
 app.use(express.json());
@@ -40,7 +19,9 @@ morgan.token(
 
 app.use(morgan(`:method :url :referrer  :response-time ms :body`));
 app.get("/api/persons", (req, res) => {
-  res.json(persons);
+  Person.find({}).then((notes) => {
+    res.json(notes);
+  });
 });
 
 app.get("/info", (req, res) => {
@@ -50,23 +31,27 @@ app.get("/info", (req, res) => {
 });
 
 app.delete("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
-  persons = persons.filter((person) => person.id !== id);
-  res.status(204).end();
+  //persons = persons.filter((person) => person.id !== id);
+  Person.findOneAndDelete(req.params.id).then((person) => {
+    res.json(person);
+    res.status(204).end();
+  });
 });
 
 app.get("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
-
-  const person = persons.find((person) => person.id === id);
-  res.json(person);
+  Person.findById(req.params.id).then((person) => {
+    res.json(person);
+  });
 });
 
 app.post("/api/persons", (req, res) => {
-  const newPerson = req.body;
-  newPerson.id = Math.random();
-  const findPerson = persons.find((person) => person.name === req.body.name);
-  persons = persons.concat(newPerson);
+  const newPerson = new Person({
+    name: req.body.name,
+    number: req.body.number,
+  });
+  const findPerson = Person.findOne(newPerson.name);
+
+  //persons = persons.concat(newPerson);
   if (!req.body.name) {
     return res.status(400).json({
       error: "name missing",
@@ -76,13 +61,15 @@ app.post("/api/persons", (req, res) => {
       error: "number missing",
     });
   }
-
+  /* 
   if (findPerson) {
     return res.status(400).json({
       error: "name exists already",
     });
-  }
-  res.json(persons);
+  } */
+  newPerson.save().then((savedPerson) => {
+    res.json(savedPerson);
+  });
 });
 
 const PORT = 3001;

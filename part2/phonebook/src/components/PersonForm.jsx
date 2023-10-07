@@ -3,7 +3,13 @@ import { useState } from "react";
 import axios from "axios";
 import personsService from "../services/persons.js";
 
-function PersonForm({ persons, setPersons, updatePerson, setMessage }) {
+function PersonForm({
+  persons,
+  setPersons,
+  updatePerson,
+  setMessage,
+  setError,
+}) {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
 
@@ -27,15 +33,25 @@ function PersonForm({ persons, setPersons, updatePerson, setMessage }) {
           updatePerson(newName, newNumber);
         }
       } else {
-        personsService.create(personObj).then(() => {
-          setMessage(`Added ${personObj.name}`);
-          setTimeout(() => {
-            setMessage(null);
-          }, 5000);
-          setPersons(persons.concat(personObj));
-          setNewName("");
-          setNewNumber("");
-        });
+        personsService
+          .create(personObj)
+          .then((returnedPerson) => {
+            setMessage(`Added ${personObj.name}`);
+            setTimeout(() => {
+              setMessage(null);
+            }, 5000);
+            setPersons(persons.concat(returnedPerson));
+            setNewName("");
+            setNewNumber("");
+          })
+          .catch((err) => {
+            setError(err.response.data.error);
+            setTimeout(() => {
+              setError(null);
+            }, 5000);
+            setNewName("");
+            setNewNumber("");
+          });
       }
     }
   };

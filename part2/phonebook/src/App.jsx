@@ -15,7 +15,7 @@ const App = () => {
     personsService.getAll().then((initialPersons) => {
       setPersons(initialPersons);
     });
-  }, []);
+  }, [message]);
 
   const updatePerson = (newName, newNumber) => {
     const person = persons.find((x) => x.name.trim() === newName.trim());
@@ -65,6 +65,7 @@ const App = () => {
         setPersons={setPersons}
         updatePerson={updatePerson}
         setMessage={setMessage}
+        setError={setError}
       />
       <h2>Numbers</h2>
       <Persons

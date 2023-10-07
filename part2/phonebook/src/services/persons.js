@@ -8,14 +8,10 @@ const getAll = () => {
 
 const create = (newObject) => {
   const req = axios.post(baseUrl, newObject);
-  return req
-    .then((res) => {
-      res.data;
-      console.log("created", res.data);
-    })
-    .catch((err) => {
-      console.log("error", err);
-    });
+  return req.then((res) => {
+    res.data;
+    console.log("created", res.data);
+  });
 };
 
 const remove = (id) => {

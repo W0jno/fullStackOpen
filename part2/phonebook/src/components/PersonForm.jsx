@@ -12,7 +12,6 @@ function PersonForm({ persons, setPersons, updatePerson, setMessage }) {
     const personObj = {
       name: newName.trim(),
       number: newNumber.trim(),
-      id: Math.random(),
     };
     if (newName !== "" || newNumber !== "") {
       if (

@@ -19,15 +19,17 @@ morgan.token(
 
 app.use(morgan(`:method :url :referrer  :response-time ms :body`));
 app.get("/api/persons", (req, res) => {
-  Person.find({}).then((notes) => {
-    res.json(notes);
+  Person.find({}).then((persons) => {
+    res.json(persons);
   });
 });
 
 app.get("/info", (req, res) => {
-  res.send(
-    `<p>Phonebook has info for ${persons.length} people</p><p>${currentDate}</p>`
-  );
+  Person.find({}).then((persons) => {
+    res.send(
+      `<p>Phonebook has info for ${persons.length} people</p><p>${currentDate}</p>`
+    );
+  });
 });
 
 app.delete("/api/persons/:id", (req, res) => {
@@ -39,9 +41,17 @@ app.delete("/api/persons/:id", (req, res) => {
 });
 
 app.get("/api/persons/:id", (req, res) => {
-  Person.findById(req.params.id).then((person) => {
-    res.json(person);
-  });
+  Person.findById(req.params.id)
+    .then((person) => {
+      if (person) {
+        res.json(person);
+      } else {
+        res.status(404).end();
+      }
+    })
+    .catch((error) => {
+      next(error);
+    });
 });
 
 app.post("/api/persons", (req, res) => {
@@ -49,10 +59,11 @@ app.post("/api/persons", (req, res) => {
     name: req.body.name,
     number: req.body.number,
   });
-  const findPerson = Person.findOne(newPerson.name);
+  /*   const findPerson = Person.findOne(newPerson.name).catch((error) => {
+    next(error);
+  }); */
 
-  //persons = persons.concat(newPerson);
-  if (!req.body.name) {
+  if (req.body.name == "") {
     return res.status(400).json({
       error: "name missing",
     });
@@ -61,16 +72,35 @@ app.post("/api/persons", (req, res) => {
       error: "number missing",
     });
   }
-  /* 
-  if (findPerson) {
-    return res.status(400).json({
-      error: "name exists already",
-    });
-  } */
+
   newPerson.save().then((savedPerson) => {
     res.json(savedPerson);
   });
 });
+
+app.put("/api/persons/:id", (req, res, next) => {
+  const person = {
+    name: req.body.name,
+    number: req.body.number,
+  };
+  console.log(req.params.id);
+  Person.findByIdAndUpdate(req.params.id, person, { new: true })
+    .then((updatedPerson) => {
+      res.json(updatedPerson.toJSON());
+    })
+    .catch((err) => next(err));
+});
+
+const errorHandler = (err, req, res, next) => {
+  console.log(err.message);
+
+  if (err.name == "CastError") {
+    return res.status(400), send({ error: "malformatted id" });
+  }
+  next(err);
+};
+
+app.use(errorHandler);
 
 const PORT = 3001;
 app.listen(PORT, (req, res) => {

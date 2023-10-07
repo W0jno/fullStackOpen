@@ -40,7 +40,7 @@ app.delete("/api/persons/:id", (req, res) => {
   });
 });
 
-app.get("/api/persons/:id", (req, res) => {
+app.get("/api/persons/:id", (req, res, next) => {
   Person.findById(req.params.id)
     .then((person) => {
       if (person) {
@@ -99,6 +99,6 @@ const errorHandler = (err, req, res, next) => {
 app.use(errorHandler);
 
 const PORT = 3001;
-app.listen(PORT, (req, res) => {
+app.listen(PORT, () => {
   console.log("Server listening on port 3001");
 });

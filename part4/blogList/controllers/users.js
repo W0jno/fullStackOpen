@@ -11,7 +11,8 @@ usersRouter.post("/", async (request, response) => {
     name,
     passwordHash,
   });
-  if (!user.usename || !user.passwordHash) {
+
+  if (!user.username || !user.passwordHash) {
     return response.status(400).json({
       error: "username and password are required",
     });

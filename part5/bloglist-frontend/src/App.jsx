@@ -3,14 +3,19 @@ import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import LoginForm from "./components/LoginForm";
 import loginService from "./services/login";
-import BlogForm from "./components/BlogForm";
+import BlogForm from "./components/blogForm";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState(null);
+  const [message, setMessage] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [url, setUrl] = useState("");
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -26,26 +31,53 @@ const App = () => {
       setUsername("");
       setPassword("");
     } catch (exception) {
-      //setErrorMessage("Wrong credentials");
+      setError("Wrong credentials");
       setTimeout(() => {
-        //setErrorMessage(null);
+        setError(null);
       }, 5000);
     }
     const blogs = await blogService.getAll();
     setBlogs(blogs);
   };
-
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       setUser(user);
       blogService.setToken(user.token);
+      getAllBlogs();
     }
   }, []);
 
+  const getAllBlogs = async () => {
+    const blogs = await blogService.getAll();
+    setBlogs(blogs);
+  };
+
+  const handleBlog = async (event) => {
+    event.preventDefault();
+
+    try {
+      const blog = await blogService.create({
+        title,
+        author,
+        url,
+      });
+      setBlogs([...blogs, blog]);
+      setMessage(`a new blog ${blog.title} by ${blog.author} has been added`);
+      setTimeout(() => {
+        setMessage(null);
+      }, 5000);
+    } catch (exception) {
+      setError("Something went wrong, please try again");
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
+    }
+  };
   return (
     <div>
+      <Notification message={message} error={error} />
       {user === null && (
         <LoginForm
           username={username}
@@ -55,14 +87,22 @@ const App = () => {
           handleLogin={handleLogin}
         />
       )}
-      {user !== null && <BlogForm user={user.name} blog={blogs} />}
-      {/* <div>
-          <h2>blogs</h2>
-          {user.name} logged in
-          {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
-          ))}
-        </div> */}
+      {user !== null && (
+        <BlogForm
+          user={user.name}
+          blogs={blogs}
+          handleBlog={handleBlog}
+          title={title}
+          url={url}
+          author={author}
+          setTitle={setTitle}
+          setUrl={setUrl}
+          setAuthor={setAuthor}
+        />
+      )}
+      {blogs.map((blog) => (
+        <Blog key={blog.id} title={blog.title} author={blog.author} />
+      ))}
     </div>
   );
 };

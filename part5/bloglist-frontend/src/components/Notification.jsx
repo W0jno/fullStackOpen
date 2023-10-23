@@ -1,7 +1,13 @@
 import React from "react";
+import "../styles/styles.css";
 
-function Notification() {
-  return <div>Notification</div>;
+function Notification({ message, error }) {
+  if (message !== null) {
+    return <div className="addedSuccesfuly">{message}</div>;
+  } else if (error !== null) {
+    return <div className="error">{error}</div>;
+  }
+  return null;
 }
 
 export default Notification;

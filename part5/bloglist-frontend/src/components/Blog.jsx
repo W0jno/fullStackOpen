@@ -1,7 +1,10 @@
-const Blog = ({ blog }) => (
+import * as React from "react";
+const Blog = (props) => (
   <div>
-    {blog.title} {blog.author}
-  </div>  
-)
+    <p>
+      {props.title} {props.author}
+    </p>
+  </div>
+);
 
-export default Blog
+export default Blog;

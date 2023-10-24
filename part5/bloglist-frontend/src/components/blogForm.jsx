@@ -1,17 +1,31 @@
-import React from "react";
-import Blog from "./Blog";
+import { React, useState } from "react";
 
 function blogForm(props) {
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [url, setUrl] = useState("");
+  const addBlog = (event) => {
+    event.preventDefault();
+    props.handleBlog({
+      title,
+      author,
+      url,
+      likes: 0,
+    });
+
+    setTitle("");
+    setAuthor("");
+    setUrl("");
+  };
   return (
     <div>
-      <h2>{props.user} has logged</h2>
-      <form onSubmit={props.handleBlog}>
+      <form onSubmit={addBlog}>
         <div>
           title:
           <input
             type="text"
             value={props.title}
-            onChange={({ target }) => props.setTitle(target.value)}
+            onChange={({ target }) => setTitle(target.value)}
           />
         </div>
         <div>
@@ -19,7 +33,7 @@ function blogForm(props) {
           <input
             type="text"
             value={props.author}
-            onChange={({ target }) => props.setAuthor(target.value)}
+            onChange={({ target }) => setAuthor(target.value)}
           />
         </div>
         <div>
@@ -27,7 +41,7 @@ function blogForm(props) {
           <input
             type="text"
             value={props.url}
-            onChange={({ target }) => props.setUrl(target.value)}
+            onChange={({ target }) => setUrl(target.value)}
           />
         </div>
         {}

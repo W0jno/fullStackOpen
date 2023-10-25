@@ -14,14 +14,19 @@ const getAll = async () => {
   return response.data;
 };
 const update = async (newObject) => {
-  ////TUTAJ BLAD
+  const newObjectID = newObject.id;
+  const newObjectUser = newObject.user;
   const response = await axios.put(`${baseUrl}/${newObject.id}`, newObject, {
     headers: {
       Authorization: token,
     },
   });
-  //console.log(response.data);
-
+  if (!response.user) {
+    response.data.user = newObjectUser;
+  }
+  if (!response.id) {
+    response.data.id = newObjectID;
+  }
   return response.data;
 };
 
@@ -34,4 +39,13 @@ const create = async (newObject) => {
   return response.data;
 };
 
-export default { getAll, setToken, create, update };
+const remove = async (object) => {
+  const response = await axios.delete(`${baseUrl}/${object.id}`, {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data;
+};
+
+export default { getAll, setToken, create, update, remove };

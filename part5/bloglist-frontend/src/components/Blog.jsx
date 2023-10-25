@@ -2,9 +2,17 @@ import * as React from "react";
 import Togglable from "./Togglable";
 const Blog = (props) => {
   const increaseLikes = () => {
-    const updatedBlog = { ...props.blog, likes: props.blog.likes + 1 };
+    const updatedBlog = {
+      ...props.blog,
+      likes: props.blog.likes + 1,
+    };
 
     props.updateBlog(updatedBlog);
+  };
+  const removeBlog = () => {
+    if (window.confirm("Are you sure you want to delete this blog?")) {
+      props.removeBlog(props.blog);
+    }
   };
   return (
     <div
@@ -23,6 +31,7 @@ const Blog = (props) => {
           </p>
           <p>url: {props.blog.url}</p>
           <p>created by: {props.blog.user.name}</p>
+          <button onClick={removeBlog}> Remove</button>
         </div>
       </Togglable>
     </div>

@@ -84,6 +84,7 @@ const App = () => {
       setMessage(
         `a blog ${BlogToUpdate.title} by ${BlogToUpdate.author} has been updated`
       );
+
       setError(null);
       setBlogs(
         blogs.map((blog) => (blog.id !== BlogToUpdate.id ? blog : updatedBlog))
@@ -100,6 +101,23 @@ const App = () => {
       }, 5000);
     }
   };
+
+  const removeBlog = async (BlogToRemove) => {
+    try {
+      await blogService.remove(BlogToRemove);
+      setMessage(`a blog ${BlogToRemove.title} has been removed`);
+      setError(null);
+      setBlogs(blogs.filter((blog) => blog.id !== BlogToRemove.id));
+    } catch (exception) {
+      setError(`Cannot remove blog ${BlogToRemove.title}`);
+      setMessage(null);
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
+    }
+  };
+
+  const sortByLikes = (b1, b2) => b2.likes - b1.likes;
   return (
     <div>
       {user !== null && (
@@ -130,8 +148,13 @@ const App = () => {
           />
         </Togglable>
       )}
-      {blogs.map((blog, key) => (
-        <Blog key={key} blog={blog} updateBlog={updateBlog}></Blog>
+      {blogs.sort(sortByLikes).map((blog, key) => (
+        <Blog
+          key={key}
+          blog={blog}
+          updateBlog={updateBlog}
+          removeBlog={removeBlog}
+        ></Blog>
       ))}
     </div>
   );

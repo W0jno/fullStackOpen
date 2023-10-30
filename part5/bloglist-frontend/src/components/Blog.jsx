@@ -20,6 +20,7 @@ const Blog = (props) => {
         display: "flex",
         flexDirection: "column",
       }}
+      className="blog"
     >
       {props.blog.title}
       <Togglable buttonLabel="view">

@@ -12,7 +12,7 @@ function AnecdoteForm() {
 
   return (
     <div>
-      {" "}
+      <h2>CREATE</h2>{" "}
       <form onSubmit={addAnecdote}>
         <div>
           <input name="anecdote" />

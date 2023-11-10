@@ -99,7 +99,7 @@ const typeDefs = `
   type Author {
     name: String!
     id: ID!
-    born: Int!
+    born: Int
     bookCount: Int!
     
   }
@@ -154,6 +154,8 @@ const resolvers = {
             }
           })
           .map((book) => ({ title: book.title, author: book.author }));
+      } else {
+        return books;
       }
     },
 

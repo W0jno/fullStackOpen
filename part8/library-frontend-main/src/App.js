@@ -1,26 +1,109 @@
-import { useState } from 'react'
-import Authors from './components/Authors'
-import Books from './components/Books'
-import NewBook from './components/NewBook'
+import { useState } from "react";
+import Authors from "./components/Authors";
+import Books from "./components/Books";
+import NewBook from "./components/NewBook";
+
+/* let books = [
+  {
+    title: "Clean Code",
+    published: 2008,
+    author: "Robert Martin",
+    id: "afa5b6f4-344d-11e9-a414-719c6709cf3e",
+    genres: ["refactoring"],
+  },
+  {
+    title: "Agile software development",
+    published: 2002,
+    author: "Robert Martin",
+    id: "afa5b6f5-344d-11e9-a414-719c6709cf3e",
+    genres: ["agile", "patterns", "design"],
+  },
+  {
+    title: "Refactoring, edition 2",
+    published: 2018,
+    author: "Martin Fowler",
+    id: "afa5de00-344d-11e9-a414-719c6709cf3e",
+    genres: ["refactoring"],
+  },
+  {
+    title: "Refactoring to patterns",
+    published: 2008,
+    author: "Joshua Kerievsky",
+    id: "afa5de01-344d-11e9-a414-719c6709cf3e",
+    genres: ["refactoring", "patterns"],
+  },
+  {
+    title: "Practical Object-Oriented Design, An Agile Primer Using Ruby",
+    published: 2012,
+    author: "Sandi Metz",
+    id: "afa5de02-344d-11e9-a414-719c6709cf3e",
+    genres: ["refactoring", "design"],
+  },
+  {
+    title: "Crime and punishment",
+    published: 1866,
+    author: "Fyodor Dostoevsky",
+    id: "afa5de03-344d-11e9-a414-719c6709cf3e",
+    genres: ["classic", "crime"],
+  },
+  {
+    title: "The Demon ",
+    published: 1872,
+    author: "Fyodor Dostoevsky",
+    id: "afa5de04-344d-11e9-a414-719c6709cf3e",
+    genres: ["classic", "revolution"],
+  },
+];
+
+let authors = [
+  {
+    name: "Robert Martin",
+    id: "afa51ab0-344d-11e9-a414-719c6709cf3e",
+    born: 1952,
+  },
+  {
+    name: "Martin Fowler",
+    id: "afa5b6f0-344d-11e9-a414-719c6709cf3e",
+    born: 1963,
+  },
+  {
+    name: "Fyodor Dostoevsky",
+    id: "afa5b6f1-344d-11e9-a414-719c6709cf3e",
+    born: 1821,
+  },
+  {
+    name: "Joshua Kerievsky", // birthyear not known
+    id: "afa5b6f2-344d-11e9-a414-719c6709cf3e",
+  },
+  {
+    name: "Sandi Metz", // birthyear not known
+    id: "afa5b6f3-344d-11e9-a414-719c6709cf3e",
+  },
+  {
+    name: "Reijo Mäki",
+    born: null,
+    id: "29a50631-7f31-11ee-bda5-630b048a4b8f",
+  },
+]; */
 
 const App = () => {
-  const [page, setPage] = useState('authors')
+  const [page, setPage] = useState("authors");
 
   return (
     <div>
       <div>
-        <button onClick={() => setPage('authors')}>authors</button>
-        <button onClick={() => setPage('books')}>books</button>
-        <button onClick={() => setPage('add')}>add book</button>
+        <button onClick={() => setPage("authors")}>authors</button>
+        <button onClick={() => setPage("books")}>books</button>
+        <button onClick={() => setPage("add")}>add book</button>
       </div>
 
-      <Authors show={page === 'authors'} />
+      <Authors show={page === "authors"} />
 
-      <Books show={page === 'books'} />
+      <Books show={page === "books"} />
 
-      <NewBook show={page === 'add'} />
+      <NewBook show={page === "add"} />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

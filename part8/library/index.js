@@ -46,7 +46,7 @@ type Token{
     name: String!
     id: ID!
     born: Int
-    bookCount: Int!
+    bookCount: Int
     
   }
   type Book {
@@ -83,7 +83,9 @@ const resolvers = {
     me: (root, args, context) => {
       return context.currentUser;
     },
-    bookCount: async () => await Book.collection.countDocuments(),
+    bookCount: async () => {
+      return await Book.collection.countDocuments();
+    },
     authorCount: async () => await Author.collection.countDocuments(),
     allBooks: async (root, args) => {
       if (args.author) {
@@ -94,20 +96,22 @@ const resolvers = {
             return await Book.find({
               author: foundAuthor.id,
               genres: { $in: [args.genre] },
-            });
+            }).populate("author");
           }
-          return await Book.find({ author: foundAuthor.id });
+          return await Book.find({ author: foundAuthor.id }).populate("author");
         }
       } else if (args.genre) {
-        return await Book.find({ genres: { $in: [args.genre] } });
+        return await Book.find({ genres: { $in: [args.genre] } }).populate(
+          "author"
+        );
       } else {
-        return await Book.find({});
+        return await Book.find({}).populate("author");
       }
     },
 
     allAuthors: async () => {
-      return await Author.find();
-      /* return authors.map((author) => {
+      return await Author.find({});
+      /*return await Author.find().map((author) => {
         const bookCount = books.filter(
           (book) => book.author === author.name
         ).length;
@@ -148,7 +152,7 @@ const resolvers = {
 
       return book;
     },
-    editAuthor: async (root, args) => {
+    editAuthor: async (root, args, context) => {
       const foundAuthor = await Author.findOne({ name: args.name });
       const currentUser = context.currentUser;
 

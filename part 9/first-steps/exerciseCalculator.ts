@@ -52,7 +52,15 @@ export const calculateExercises = (exerciseHours: number[], targetAmount: number
             average: average
         }
     }
-
+  return {
+        periodLength: exerciseHours.length,
+        trainingDays: trainingDays,
+        success: false,
+        rating: 0,  // Ustaw wartość dla przypadku domyślnego
+        ratingDescription: 'Not enough data',
+        target: targetAmount,
+        average: average
+    };
 }
 const targetValue:number = Number(process.argv[2]);
 const trainingDays: number[] = process.argv.slice(3).map(Number);

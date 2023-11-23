@@ -1,13 +1,11 @@
 
 import { ContentProps } from "../types"
-
+import Part from "./Part"
 function Content (props: ContentProps) : JSX.Element {
   return (
     <div>
-      {props.courseParts.map((part, i) =>
-        <p key={i}>
-            {part.name} {part.exerciseCount}
-        </p>
+      {props.courseParts.map((part, i) =>   
+            <Part key={i} part={part}/>
       )}
     </div>
   )

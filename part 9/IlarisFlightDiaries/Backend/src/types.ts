@@ -14,10 +14,10 @@ export enum Visibility {
 }
 
 export interface DiaryEntry {
-  id: string;
+  id: number;
   date: string;
-  weather: Weather;
-  visibility: Visibility;
+  weather: string;
+  visibility: string;
   comment: string;
 }
 

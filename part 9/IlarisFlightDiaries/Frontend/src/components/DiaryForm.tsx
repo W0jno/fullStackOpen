@@ -1,33 +1,35 @@
 import { useState } from "react"
 import {DiaryFormProps} from "../types"
+import { createNewDiaryEntry } from "../service/diaryService"
 function DiaryForm(props: DiaryFormProps) : JSX.Element {
     const [date, setDate] = useState('')
     const [visibility, setVisibility] = useState('')
     const [weather, setWeather] = useState('')
     const [comment, setComment] = useState('')
-    const sendData = (event: React.SyntheticEvent) =>{
-        event.preventDefault()
-        setDate('');
+    const diaryCreation = (event: React.SyntheticEvent) =>{
+      event.preventDefault()
+     /*  const diaryToAdd = {
+        id: props.diary.length + 1,
+        date,
+        visibility,
+        weather,
+        comment
+      } */
+      createNewDiaryEntry({date: date, visibility: visibility, weather: weather, comment:comment}).then(data=> props.setDiary(props.diary.concat(data)))
         
+        setDate('');
         setVisibility('');
         setWeather('');
         setComment('');
-        const newDiaryEntry =  {
-            date: date,
-            visibility: visibility,
-            weather: weather,
-            comment: comment
-        }
-        props.dataHandler(newDiaryEntry)
-        //props.diaryCreation(event);
-    }
+  }
+
   return (
      <>
       <h2>Add new Entry</h2>
-      <form onSubmit={sendData}>
+      <form onSubmit={diaryCreation}>
         <div>
           Date
-          <input value={date} onChange={(e) => setDate(e.target.value)} />
+          <input type='date' value={date} onChange={(e) => setDate(e.target.value)} />
         </div>
         <div>
           Visibility

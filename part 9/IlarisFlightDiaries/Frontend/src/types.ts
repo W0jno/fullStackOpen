@@ -1,3 +1,5 @@
+import { NewDiaryEntry } from "../../Backend/src/types";
+
 export enum Weather {
   Sunny = 'sunny',
   Rainy = 'rainy',
@@ -15,13 +17,23 @@ export enum Visibility {
 
  export interface newDiaryContent {
   date: string;
-  weather: string;
-  visibility: string;
+  weather:  Weather;
+  visibility: Visibility;
   comment: string;
 } 
 export interface DiaryFormProps {
-  diaryCreation: (event: React.SyntheticEvent) =>void;
-  dataHandler: (data: any) => void;
+   setDiary: React.Dispatch<React.SetStateAction<NewDiaryEntry[]>>;
+   diary: NewDiaryEntry[];
   
+}
+
+export interface WeatherOptions {
+  value: Weather,
+  label: string
+}
+
+export interface VisibilityOptions {
+  value: Visibility,
+  label: string
 }
 

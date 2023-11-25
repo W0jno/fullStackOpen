@@ -1,4 +1,4 @@
-import axios,{AxiosError} from "axios";
+import axios from "axios";
 import { NewDiaryEntry, DiaryEntry } from "../../../Backend/src/types";
 
 const baseUrl = 'http://localhost:3000/api/diaries'

@@ -8,13 +8,6 @@ function DiaryForm(props: DiaryFormProps) : JSX.Element {
     const [comment, setComment] = useState('')
     const diaryCreation = (event: React.SyntheticEvent) =>{
       event.preventDefault()
-     /*  const diaryToAdd = {
-        id: props.diary.length + 1,
-        date,
-        visibility,
-        weather,
-        comment
-      } */
       createNewDiaryEntry({date: date, visibility: visibility, weather: weather, comment:comment}).then(data=> props.setDiary(props.diary.concat(data)))
         
         setDate('');

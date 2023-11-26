@@ -1,5 +1,5 @@
 import { useState } from "react"
-import {DiaryFormProps} from "../types"
+import {DiaryFormProps, Visibility, VisibilityOption, Weather, WeatherOption} from "../types"
 import { createNewDiaryEntry } from "../service/diaryService"
 function DiaryForm(props: DiaryFormProps) : JSX.Element {
     const [date, setDate] = useState('')
@@ -15,7 +15,15 @@ function DiaryForm(props: DiaryFormProps) : JSX.Element {
         setWeather('');
         setComment('');
   }
+  const weatherOptions: WeatherOption[] = Object.values(Weather).map(v => ({
+    value: v,
+    label: v.toString()
+  }))
 
+  const visibilityOptions: VisibilityOption[] = Object.values(Visibility).map(v => ({
+    value: v,
+    label: v.toString()
+  }))
   return (
      <>
       <h2>Add new Entry</h2>
@@ -26,14 +34,22 @@ function DiaryForm(props: DiaryFormProps) : JSX.Element {
         </div>
         <div>
           Visibility
-          <input
-            value={visibility}
-            onChange={(e) => setVisibility(e.target.value)}
-          />
+          
+         {visibilityOptions.map((v, index) => (
+      <div key={index}>
+        <input type='radio' value={v.value} checked={visibility === v.value} onChange={() => setVisibility(v.value)} />
+        <label>{v.label}</label>
+      </div>
+    ))}
         </div>
         <div>
           Weather
-          <input value={weather} onChange={(e) => setWeather(e.target.value)} />
+          {weatherOptions.map((v, index) => (
+      <div key={index} >
+        <input type='radio' value={v.value} checked={weather === v.value} onChange={() => setWeather(v.value)} />
+        <label>{v.label}</label>
+      </div>
+    ))}
         </div>
         <div>
           Comment

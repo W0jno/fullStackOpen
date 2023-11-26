@@ -27,12 +27,12 @@ export interface DiaryFormProps {
   
 }
 
-export interface WeatherOptions {
+export interface WeatherOption {
   value: Weather,
   label: string
 }
 
-export interface VisibilityOptions {
+export interface VisibilityOption {
   value: Visibility,
   label: string
 }
